@@ -2,8 +2,16 @@ from fastapi import FastAPI
 from models import JobApplication
 from database import get_connection
 from psycopg2.extras import RealDictCursor
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "https://project-launchpad-frontend.vercel.app"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 applications = []
 
@@ -52,3 +60,4 @@ def update_application(id : int, application: JobApplication):
     conn.commit()
     conn.close()
     return {"message": "Application updated successfully"}
+
